@@ -1,100 +1,124 @@
-create user 'lmm'@'%' identified by '|\/|3t@daTA'; -- Metadata
-create user 'lwm'@'%' identified by '\/\/@$#!NG'; -- Wash
-create user 'lclm'@'%' identified by 'Cl0t#!|\|g'; -- Clothing
-create user 'lim'@'%' identified by '!r0Ni|\|G'; -- Ironing
-create user 'ldcm'@'%' identified by 'DrYCL3A|\|'; -- Dry Clean
-create user 'lum'@'%' identified by 'U$3r'; -- User
-create user 'lcum'@'%' identified by 'Cu$t0|\/|3r'; -- Customer
-create user 'lagm'@'%' identified by '/\G3|\|t'; -- Agent
-create user 'lprtm'@'%' identified by 'P@rt|\|3R'; -- Partner
-create user 'ldim'@'%' identified by 'D!$c0u|\|t'; -- Discount
-create user 'ltm'@'%' identified by 'T@x'; -- Tax
-create user 'lom'@'%' identified by 'o5d3R'; -- Order
-create user 'lpm'@'%' identified by 'P@y|\/|3|\|t'; -- Payment
-create user 'lpkm'@'%' identified by 'P!cKUp'; -- Pickup
-create user 'ldelm'@'%' identified by 'D3L!\/eRy'; --  Delivery
-create user 'ldtm'@'%' identified by 'P!cKUp--Tr@ckI|\|G'; -- Pickup Tracking
-create user 'lptm'@'%' identified by 'D3L!\/eRy-Tr@ckI|\|G'; --  Delivery Tracking
-create user 'lcm'@'%' identified by 'C0|\|$3nT'; -- Consent
-create user 'lvm'@'%' identified by '\/3R!fY'; -- Verify
-create user 'lwdm'@'%' identified by '\/\/@$#!NG-D!$c0u|\|t'; -- Wash Discount
-create user 'lwpm'@'%' identified by '\/\/@$#!NG-Pr!cI|\|g'; -- Wash Pricing
-create user 'lwtm'@'%' identified by '\/\/@$#!NG-Tr@ckI|\|G'; -- Wash Tracking
-create user 'lidm'@'%' identified by '!r0Ni|\|G-D!$c0u|\|t'; -- Iron Discount
-create user 'lipm'@'%' identified by '!r0Ni|\|G-Pr!cI|\|g'; --  Iron Pricing
-create user 'litm'@'%' identified by '!r0Ni|\|G-Tr@ckI|\|G'; -- Iron Tracking
-create user 'ldcdm'@'%' identified by 'DrYCL3A|\|-D!$c0u|\|t'; -- Dry Clean Discount
-create user 'ldcpm'@'%' identified by 'DrYCL3A|\|-Pr!cI|\|g'; -- Dry Clean Pricing
-create user 'ldctm'@'%' identified by 'DrYCL3A|\|-Tr@ckI|\|G'; -- Dry Clean Tracking
-create user 'ldm'@'%' identified by 'D!$c0u|\|t'; -- Discount
+create user 'lms_type_manager'@'%' identified by '|\/|3t@daTA'; -- Metadata
+create user 'lms_tax_manager'@'%' identified by '\/\/@$#!NG'; -- Wash
+create user 'lms_discount_manager'@'%' identified by 'Cl0t#!|\|g'; -- Clothing
+create user 'lms_clothing_manager'@'%' identified by '!r0Ni|\|G'; -- Ironing
+create user 'lms_user_manager'@'%' identified by 'DrYCL3A|\|'; -- Dry Clean
+create user 'lms_reset_manager'@'%' identified by 'U$3r'; -- User
+create user 'lms_customer_manager'@'%' identified by 'Cu$t0|\/|3r'; -- Customer
+create user 'lms_subscription_manager'@'%' identified by '/\G3|\|t'; -- Agent
+create user 'lms_employee_db'@'%' identified by 'P@rt|\|3R'; -- Partner
+create user 'lms_agent_manager'@'%' identified by 'D!$c0u|\|t'; -- Discount
+create user 'lms_partner_manager'@'%' identified by 'T@x'; -- Tax
+create user 'lms_consent_manager'@'%' identified by 'o5d3R'; -- Order
+create user 'lms_verification_manager'@'%' identified by 'P@y|\/|3|\|t'; -- Payment
+create user 'lms_wash_manager'@'%' identified by 'P!cKUp'; -- Pickup
+create user 'lms_wash_pricing_manager'@'%' identified by 'D3L!\/eRy'; --  Delivery
+create user 'lms_wash_discount_manager'@'%' identified by 'P!cKUp--Tr@ckI|\|G'; -- Pickup Tracking
+create user 'lms_wash_tracking_manager'@'%' identified by 'D3L!\/eRy-Tr@ckI|\|G'; --  Delivery Tracking
+create user 'lms_iron_manager'@'%' identified by 'C0|\|$3nT'; -- Consent
+create user 'lms_iron_pricing_manager'@'%' identified by '\/3R!fY'; -- Verify
+create user 'lms_iron_discount_manager'@'%' identified by '\/\/@$#!NG-D!$c0u|\|t'; -- Wash Discount
+create user 'lms_iron_tracking_manager'@'%' identified by '\/\/@$#!NG-Pr!cI|\|g'; -- Wash Pricing
+create user 'lms_dry_clean_manager'@'%' identified by '\/\/@$#!NG-Tr@ckI|\|G'; -- Wash Tracking
+create user 'lms_dry_clean_pricing_manager'@'%' identified by '!r0Ni|\|G-D!$c0u|\|t'; -- Iron Discount
+create user 'lms_dry_clean_discount_manager'@'%' identified by '!r0Ni|\|G-Pr!cI|\|g'; --  Iron Pricing
+create user 'lms_dry_clean_tracking_manager'@'%' identified by '!r0Ni|\|G-Tr@ckI|\|G'; -- Iron Tracking
+create user 'lms_pickup_manager'@'%' identified by 'DrYCL3A|\|-D!$c0u|\|t'; -- Dry Clean Discount
+create user 'lms_pickup_pricing_manager'@'%' identified by 'DrYCL3A|\|-Pr!cI|\|g'; -- Dry Clean Pricing
+create user 'lms_pickup_tracking_manager'@'%' identified by 'DrYCL3A|\|-Tr@ckI|\|G'; -- Dry Clean Tracking
+create user 'lms_delivery_manager'@'%' identified by 'D!$c0u|\|t'; -- Discount
+create user 'lms_delivery_pricing_manager'@'%' identified by 'D!$c0u|\|t'; -- Discount
+create user 'lms_delivery_tracking_manager'@'%' identified by 'D!$c0u|\|t'; -- Discount
+create user 'lms_adjustment_manager'@'%' identified by 'D!$c0u|\|t'; -- Discount
+create user 'lms_order_manager'@'%' identified by 'D!$c0u|\|t'; -- Discount
+create user 'lms_transaction_manager'@'%' identified by 'D!$c0u|\|t'; -- Discount
 
 
-create database lms_metadata_db;
+
+
+create database lms_type_db;
 create database lms_tax_db;
 create database lms_discount_db;
 create database lms_clothing_db;
 create database lms_user_db;
+create database lms_reset_db;
 create database lms_customer_db;
+create database lms_subscription_db;
+create database lms_employee_db;
 create database lms_agent_db;
 create database lms_partner_db;
 create database lms_consent_db;
 create database lms_verification_db;
 create database lms_wash_db;
+create database lms_wash_pricing_db;
 create database lms_wash_discount_db;
 create database lms_wash_tracking_db;
-create database lms_wash_pricing_db;
 create database lms_iron_db;
+create database lms_iron_pricing_db;
 create database lms_iron_discount_db;
 create database lms_iron_tracking_db;
-create database lms_iron_pricing_db;
 create database lms_dry_clean_db;
+create database lms_dry_clean_pricing_db;
 create database lms_dry_clean_discount_db;
 create database lms_dry_clean_tracking_db;
-create database lms_dry_clean_pricing_db;
-create database lms_order_db;
-create database lms_payment_db;
 create database lms_pickup_db;
+create database lms_pickup_pricing_db;
 create database lms_pickup_tracking_db;
 create database lms_delivery_db;
+create database lms_delivery_pricing_db;
 create database lms_delivery_tracking_db;
+create database lms_adjustment_db;
+create database lms_order_db;
+create database lms_transaction_db;
 
 
-grant select, insert, update on lms_metadata_db.* to 'lmm'@'%';
-grant select, insert, update on lms_tax_db.* to 'ldim'@'%';
-grant select, insert, update on lms_discount_db.* to 'ldim'@'%';
-grant select, insert, update on lms_clothing_db.* to 'lclm'@'%';
-grant select, insert, update on lms_user_db.* to 'lum'@'%';
-grant select, insert, update on lms_customer_db.* to 'lcum'@'%';
-grant select, insert, update on lms_agent_db.* to 'lagm'@'%';
-grant select, insert, update on lms_partner_db.* to 'lprtm'@'%';
-grant select, insert, update on lms_consent_db.* to 'lcm'@'%';
-grant select, insert, update on lms_verification_db.* to 'lvm'@'%';
-grant select, insert, update on lms_wash_db.* to 'lwm'@'%';
-grant select, insert, update on lms_wash_discount_db.* to 'lwdm'@'%';
-grant select, insert, update on lms_wash_tracking_db.* to 'lwtm'@'%';
-grant select, insert, update on lms_wash_pricing_db.* to 'lwpm'@'%';
-grant select, insert, update on lms_iron_db.* to 'lim'@'%';
-grant select, insert, update on lms_iron_pricing_db.* to 'lipm'@'%';
-grant select, insert, update on lms_iron_discount_db.* to 'lidm'@'%';
-grant select, insert, update on lms_iron_tracking_db.* to 'litm'@'%';
-grant select, insert, update on lms_dry_clean_db.* to 'ldcm'@'%';
-grant select, insert, update on lms_dry_clean_discount_db.* to 'ldcdm'@'%';
-grant select, insert, update on lms_dry_clean_pricing_db.* to 'ldcpm'@'%';
-grant select, insert, update on lms_dry_clean_tracking_db.* to 'ldctm'@'%';
-grant select, insert, update on lms_order_db.* to 'lom'@'%';
-grant select, insert, update on lms_payment_db.* to 'lpm'@'%';
-grant select, insert, update on lms_pickup_db.* to 'lpkm'@'%';
-grant select, insert, update on lms_pickup_tracking_db.* to 'lptm'@'%';
-grant select, insert, update on lms_delivery_db.* to 'ldelm'@'%';
-grant select, insert, update on lms_delivery_tracking_db.* to 'ldtm'@'%';
+
+grant select, insert, update on lms_type_db.* to 'lms_type_manager'@'%';
+grant select, insert, update on lms_tax_db.* to 'lms_tax_manager'@'%';
+grant select, insert, update on lms_discount_db.* to 'lms_discount_manager'@'%';
+grant select, insert, update on lms_clothing_db.* to 'lms_clothing_manager'@'%';
+grant select, insert, update on lms_user_db.* to 'lms_user_manager'@'%';
+grant select, insert, update on lms_reset_db.* to 'lms_reset_manager'@'%';
+grant select, insert, update on lms_customer_db.* to 'lms_customer_manager'@'%';
+grant select, insert, update on lms_subscription_db.* to 'lms_subscription_manager'@'%';
+grant select, insert, update on lms_employee_db.* to 'lms_employee_db'@'%';
+grant select, insert, update on lms_agent_db.* to 'lms_agent_manager'@'%';
+grant select, insert, update on lms_partner_db.* to 'lms_partner_manager'@'%';
+grant select, insert, update on lms_consent_db.* to 'lms_consent_manager'@'%';
+grant select, insert, update on lms_verification_db.* to 'lms_verification_manager'@'%';
+grant select, insert, update on lms_wash_db.* to 'lms_wash_manager'@'%';
+grant select, insert, update on lms_wash_pricing_db.* to 'lms_wash_pricing_manager'@'%';
+grant select, insert, update on lms_wash_discount_db.* to 'lms_wash_discount_manager'@'%';
+grant select, insert, update on lms_wash_tracking_db.* to 'lms_wash_tracking_manager'@'%';
+grant select, insert, update on lms_iron_db.* to 'lms_iron_manager'@'%';
+grant select, insert, update on lms_iron_pricing_db.* to 'lms_iron_pricing_manager'@'%';
+grant select, insert, update on lms_iron_discount_db.* to 'lms_iron_discount_manager'@'%';
+grant select, insert, update on lms_iron_tracking_db.* to 'lms_iron_tracking_manager'@'%';
+grant select, insert, update on lms_dry_clean_db.* to 'lms_dry_clean_manager'@'%';
+grant select, insert, update on lms_dry_clean_discount_db.* to 'lms_dry_clean_pricing_manager'@'%';
+grant select, insert, update on lms_dry_clean_pricing_db.* to 'lms_dry_clean_discount_manager'@'%';
+grant select, insert, update on lms_dry_clean_tracking_db.* to 'lms_dry_clean_tracking_manager'@'%';
+grant select, insert, update on lms_pickup_db.* to 'lms_pickup_manager'@'%';
+grant select, insert, update on lms_pickup_pricing_db.* to 'lms_pickup_pricing_manager'@'%';
+grant select, insert, update on lms_pickup_tracking_db.* to 'lms_pickup_tracking_manager'@'%';
+grant select, insert, update on lms_delivery_db.* to 'lms_delivery_manager'@'%';
+grant select, insert, update on lms_delivery_pricing_db.* to 'lms_delivery_pricing_manager'@'%';
+grant select, insert, update on lms_delivery_tracking_db.* to 'lms_delivery_tracking_manager'@'%';
+grant select, insert, update on lms_adjustment_db.* to 'lms_adjustment_manager'@'%';
+grant select, insert, update on lms_order_db.* to 'lms_order_manager'@'%';
+grant select, insert, update on lms_transaction_db.* to 'lms_transaction_manager'@'%';
 
 
-drop database lms_metadata_db;
+
+drop database lms_type_db;
 drop database lms_tax_db;
 drop database lms_discount_db;
 drop database lms_clothing_db;
 drop database lms_user_db;
+drop database lms_reset_db;
 drop database lms_customer_db;
+drop database lms_subscription_db;
+drop database lms_employee_db;
 drop database lms_agent_db;
 drop database lms_partner_db;
 drop database lms_consent_db;
@@ -111,12 +135,15 @@ drop database lms_dry_clean_db;
 drop database lms_dry_clean_pricing_db;
 drop database lms_dry_clean_discount_db;
 drop database lms_dry_clean_tracking_db;
-drop database lms_order_db;
-drop database lms_payment_db;
 drop database lms_pickup_db;
+drop database lms_pickup_pricing_db;
 drop database lms_pickup_tracking_db;
 drop database lms_delivery_db;
+drop database lms_delivery_pricing_db;
 drop database lms_delivery_tracking_db;
+drop database lms_adjustment_db;
+drop database lms_order_db;
+drop database lms_transaction_db;
 
 
 drop user 'ldm'@'%';

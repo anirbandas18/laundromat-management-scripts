@@ -1,1 +1,1 @@
-select * from lms_metadata_db.currency_type_lov;
+select * from lms_type_db.type_lov;

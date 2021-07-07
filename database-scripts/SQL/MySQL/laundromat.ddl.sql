@@ -29,9 +29,10 @@ create table if not exists lms_type_db.type_model (
     shipping-pickup, shipping-delivery, laundry-wash, laundry-iron, laundry-dry-clean, enterprise-small, enterprise-medium, enterprise-large, temperature-celsius, temperature-fahrenheit
     subscription-basic, subscription-premium, tax-cgst, tax-gst, tax-sales-tax, discount-subscription, discount-deal, discount-coupon, address-home, address-work, address-other
     clothing-type-household, clothing-type-garment, material-silk, material-cotton, material-rayon, material-jute, role-customer, role-agent, role-partner, role-employee, 
-    permission-order, permission-pickup, permission-wash, permission-iron, permission-dry-clean, permission-deliver, permission-admin, permission-operate,
+    permission-order, permission-pickup, permission-wash, permission-iron, permission-dry-clean, permission-deliver, permission-manage, permission-operate,
     consent-customer, consent-agent, consent-partner, consent-employee, verification-basic, verification-intermediate, verification-advanced, load-weighted, load-individual, 
     wash-machine, wash-hand, iron-machine, iron-box, iron-none, dry-clean-hcs, dry-clean-pce, mildness-professional, mildness-normmal, mildness-gentle, mildness-very-gentle,
+
     medium-steam, medium-water, pickup-same-day, pickup-standard, pickup-scheduled, delivery-same-day, delivery-standard, delivery-scheduled, payment-card, payment-cash, payment-upi, payment-net-banking
     adjustment-discount, adjustment-deal, adjustment-subscription, adjustment-tax, adjustment-pickup, adjustment-delivery
     */
@@ -55,8 +56,9 @@ create table if not exists lms_type_db.type_model (
 create table if not exists lms_tax_db.tax_model (
 	id int auto_increment,
     tax_type_model_id int not null,
+    currency_type_model_id int not null,
     rate float not null,
-    currency varchar(10) not null,
+    currency_name varchar(10) not null,
     name varchar(50) not null, -- gst-inr, cgst-inr
     description varchar(100),
     created_on timestamp default current_timestamp,
@@ -68,7 +70,8 @@ create table if not exists lms_tax_db.tax_model (
     constraint pk_tax_model primary key (id),
     constraint chk_tax_model_rate check (rate > 0),
     index idx_tax_model_tax_type_model_id (tax_type_model_id),
-    index idx_tax_model_currency (currency)
+    index idx_tax_model_currency_type_model_id (currency_type_model_id),
+    index idx_tax_model_currency_name (currency_name)
 );
 
 -----------------------------------------------------------------------------------------------------------------
@@ -88,7 +91,7 @@ create table if not exists lms_discount_db.discount_status_lov (
     constraint pk_discount_status_lov primary key (id)
 );
 
-create table if not exists lms_discount_db.discount_status_reason (
+/*create table if not exists lms_discount_db.discount_status_reason (
 	id int auto_increment,
     discount_status_lov_id int not null,
     text varchar(255), -- other, reason 1, reason 2
@@ -100,12 +103,13 @@ create table if not exists lms_discount_db.discount_status_reason (
 	version int default 0,
 	constraint pk_discount_status_reason primary key (id),
     constraint fk_discount_status_reason_discount_status_lov foreign key (discount_status_lov_id) references lms_discount_db.discount_status_lov(id)
-);
+);*/
 
 create table if not exists lms_discount_db.discount_model (
 	id int auto_increment,
     discount_type_model_id int not null,
-    type enum('PERCENTAGE', 'FIXED') not null,
+    name varchar(20) not null,
+    description varchar(100),
     subscription_level_sw bigint default 0,
     priority int not null,
     created_on timestamp default current_timestamp,
@@ -117,11 +121,11 @@ create table if not exists lms_discount_db.discount_model (
     constraint pk_discount_model primary key (id),
     constraint chk_discount_model_priority check (priority > 0),
     index idx_discount_model_discount_type_model_id (discount_type_model_id),
-    index idx_discount_model_type (type),
+    index idx_discount_model_name (name),
     index idx_discount_model_prority (priority)
 );
 
-create table if not exists lms_discount_db.discount_rate (
+/*create table if not exists lms_discount_db.discount_rate (
 	id int auto_increment,
     discount_model_id int not null,
     value float not null,
@@ -135,14 +139,39 @@ create table if not exists lms_discount_db.discount_rate (
     constraint fk_discount_rate_discount_model foreign key (discount_model_id) references lms_discount_db.discount_model(id),
     constraint chk_discount_rate_value check (value > 0),
     index idx_discount_rate_discount_model_id (discount_model_id)
+);*/
+
+create table if not exists lms_discount_db.discount_rate (
+	id int auto_increment,
+    discount_model_id int not null,
+    value float not null,
+    minimum_value float not null,
+    maximum_value float not null,
+    currency_type_model_id int not null,
+    currency_name varchar(10) not null,
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_discount_rate primary key (id),
+    constraint fk_discount_rate_discount_model foreign key (discount_model_id) references lms_discount_db.discount_model(id),
+    constraint chk_discount_rate_value check (value > 0),
+    constraint chk_discount_rate_minimum_value check (minimum_value >= 0),
+    constraint chk_discount_rate_maximum_value check (maximum_value >= 0),
+    constraint uq_discount_rate_discount_model_id_currency_type_model_id unique (discount_model_id, currency_type_model_id),
+    index idx_discount_rate_discount_model_id (discount_model_id),
+    index idx_discount_rate_currency_type_model_id (currency_type_model_id)
 );
 
-create table if not exists lms_discount_db.discount_percentage (
+/*create table if not exists lms_discount_db.discount_percentage (
 	id int auto_increment,
     discount_rate_id int not null,
     minimum_value float not null,
     maximum_value float not null,
-    currency varchar(10) not null,
+    currency_type_model_id int not null,
+    currency_name varchar(10) not null,
     created_on timestamp default current_timestamp,
     created_by int not null,
     modified_on timestamp default current_timestamp,
@@ -171,7 +200,7 @@ create table if not exists lms_discount_db.discount_amount (
     constraint fk_discount_amount_discount_rate foreign key (discount_rate_id) references lms_discount_db.discount_rate(id),
     constraint chk_discount_amount_minimum_value check (minimum_value >= 0),
     index idx_discount_percentage_discount_rate_id (discount_rate_id)
-);
+);*/
 
 -----------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- CLOTHING DB --------------------------------------------------

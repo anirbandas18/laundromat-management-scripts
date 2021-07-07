@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bad6222a-097c-461d-9b01-cb3e5ba33eaf",
+		"_postman_id": "5aef216a-5b11-4e52-86da-7fd368d0e225",
 		"name": "Laundromat",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -12,186 +12,392 @@
 					"name": "type-service",
 					"item": [
 						{
-							"name": "create type lov",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"Adjustment\",\r\n    \"description\": \"Addition/deduction of overhead charges\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+							"name": "type lov",
+							"item": [
+								{
+									"name": "create type lov",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Tax\",\r\n    \"description\": \"Country specific government charges\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:10080/v1/type/typelov",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"typelov"
+											]
 										}
-									}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "localhost:10080/v1/type/typelov",
-									"host": [
-										"localhost"
-									],
-									"port": "10080",
-									"path": [
-										"v1",
-										"type",
-										"typelov"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get all type lov",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:10080/v1/type/typelov/",
-									"host": [
-										"localhost"
-									],
-									"port": "10080",
-									"path": [
-										"v1",
-										"type",
-										"typelov",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get all type lov by name",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:10080/v1/type/typelov/name/cu",
-									"host": [
-										"localhost"
-									],
-									"port": "10080",
-									"path": [
-										"v1",
-										"type",
-										"typelov",
-										"name",
-										"cu"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get type lov details by id",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:10080/v1/type/typelov/id/1",
-									"host": [
-										"localhost"
-									],
-									"port": "10080",
-									"path": [
-										"v1",
-										"type",
-										"typelov",
-										"id",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update type lov details by id",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"Adjustment\",\r\n    \"description\": \"Addition/deduction of overhead charges\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+								{
+									"name": "get all type lov by name",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:10080/v1/type/lov/name/dis",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"lov",
+												"name",
+												"dis"
+											]
 										}
-									}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "localhost:10080/v1/type/typelov/id/1",
-									"host": [
-										"localhost"
-									],
-									"port": "10080",
-									"path": [
-										"v1",
-										"type",
-										"typelov",
-										"id",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "soft delete type lov by id",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "localhost:10080/v1/type/typelov/1",
-									"host": [
-										"localhost"
-									],
-									"port": "10080",
-									"path": [
-										"v1",
-										"type",
-										"typelov",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "patch type lov attributes by d",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json-patch+json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "[\r\n    {\r\n        \"op\": \"replace\",\r\n        \"path\": \"/active\",\r\n        \"value\": \"true\"\r\n    }\r\n]",
-									"options": {
-										"raw": {
-											"language": "json"
+								{
+									"name": "get all type lov",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:10080/v1/type/lov/",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"lov",
+												""
+											]
 										}
-									}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "localhost:10080/v1/type/typelov/1",
-									"host": [
-										"localhost"
-									],
-									"port": "10080",
-									"path": [
-										"v1",
-										"type",
-										"typelov",
-										"1"
-									]
+								{
+									"name": "get type lov details by id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:10080/v1/type/lov/id/30",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"lov",
+												"id",
+												"30"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update type lov details by id",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n   \"description\": \"This is full update again\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:10080/v1/type/lov/30",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"lov",
+												"30"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "soft delete type lov by id",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "localhost:10080/v1/type/lov/23",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"lov",
+												"23"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "patch type lov attributes by d",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json-patch+json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\r\n    {\r\n        \"op\": \"replace\",\r\n        \"path\": \"/name\",\r\n        \"value\": \"Iron\"\r\n    }\r\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:10080/v1/type/lov/21",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"lov",
+												"21"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
+						},
+						{
+							"name": "type model",
+							"item": [
+								{
+									"name": "create type model",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"typeLovId\": 2,\r\n    \"name\": \"American VAT\",\r\n    \"description\": \"American Values Added Tax\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:10080/v1/type/model",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"model"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get type model details by id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:10080/v1/type/model/id/23",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"model",
+												"id",
+												"23"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "patch type model attribute by id",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json-patch+json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\r\n    {\r\n        \"op\": \"replace\",\r\n        \"path\": \"/description\",\r\n        \"value\": \"Indian State Goods and Service Tax\"\r\n    },\r\n    {\r\n        \"op\": \"replace\",\r\n        \"path\": \"/name\",\r\n        \"value\": \"SGST\"\r\n    }\r\n]"
+										},
+										"url": {
+											"raw": "localhost:10080/v1/type/model/4",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"model",
+												"4"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all type models by type lov id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:10080/v1/type/model/typelovid/2",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"model",
+												"typelovid",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all type model ",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:10080/v1/type/model",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"model"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all type model by name",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:10080/v1/type/model/name/ot",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"model",
+												"name",
+												"ot"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "soft delete type model by id",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "localhost:10080/v1/type/model/30",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"model",
+												"30"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update type model details by id",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n   \"description\": \"This is full update again\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:10080/v1/type/model/30",
+											"host": [
+												"localhost"
+											],
+											"port": "10080",
+											"path": [
+												"v1",
+												"type",
+												"model",
+												"30"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						},
 						{
 							"name": "health of type service",
@@ -199,7 +405,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:10080/v1/type/actuator/",
+									"raw": "localhost:10080/v1/type/actuator/health",
 									"host": [
 										"localhost"
 									],
@@ -208,11 +414,245 @@
 										"v1",
 										"type",
 										"actuator",
-										""
+										"health"
 									]
 								}
 							},
 							"response": []
+						}
+					]
+				},
+				{
+					"name": "tax-service",
+					"item": [
+						{
+							"name": "tax model",
+							"item": [
+								{
+									"name": "get all tax model",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:11080/v1/tax/model",
+											"host": [
+												"localhost"
+											],
+											"port": "11080",
+											"path": [
+												"v1",
+												"tax",
+												"model"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create tax model",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"SGST\",\r\n    \"description\": \"State Goods and Service Tax\",\r\n    \"rate\": 8,\r\n    \"taxTypeModelId\": 5,\r\n    \"currencyTypeModelForm\": {\r\n        \"id\": 1,\r\n        \"name\": \"INR\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:11080/v1/tax/model",
+											"host": [
+												"localhost"
+											],
+											"port": "11080",
+											"path": [
+												"v1",
+												"tax",
+												"model"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all tax model by name",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:11080/v1/tax/models/name/c",
+											"host": [
+												"localhost"
+											],
+											"port": "11080",
+											"path": [
+												"v1",
+												"tax",
+												"models",
+												"name",
+												"c"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get tax model details by id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:11080/v1/tax/model/id/2",
+											"host": [
+												"localhost"
+											],
+											"port": "11080",
+											"path": [
+												"v1",
+												"tax",
+												"model",
+												"id",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all tax model by tax type model id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:11080/v1/tax/model/taxtypemodelid/5",
+											"host": [
+												"localhost"
+											],
+											"port": "11080",
+											"path": [
+												"v1",
+												"tax",
+												"model",
+												"taxtypemodelid",
+												"5"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "patch tax model attributes by id",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json-patch+json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\r\n    {\r\n        \"op\": \"replace\",\r\n        \"path\": \"/active\",\r\n        \"value\": \"true\"\r\n    }\r\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:11080/v1/tax/model/1",
+											"host": [
+												"localhost"
+											],
+											"port": "11080",
+											"path": [
+												"v1",
+												"tax",
+												"model",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all tax model by currency type model id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:11080/v1/tax/model/currencytypemodelid/1",
+											"host": [
+												"localhost"
+											],
+											"port": "11080",
+											"path": [
+												"v1",
+												"tax",
+												"model",
+												"currencytypemodelid",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update tax model details by id",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"SGST\",\r\n    \"description\": \"State Goods and Service Tax\",\r\n    \"rate\": 18,\r\n    \"taxTypeModelId\": 4,\r\n    \"currencyTypeModelForm\": {\r\n        \"id\": 1,\r\n        \"name\": \"INR\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:11080/v1/tax/model/2",
+											"host": [
+												"localhost"
+											],
+											"port": "11080",
+											"path": [
+												"v1",
+												"tax",
+												"model",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "soft delete tax mode by id",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "localhost:11080/v1/tax/model/1",
+											"host": [
+												"localhost"
+											],
+											"port": "11080",
+											"path": [
+												"v1",
+												"tax",
+												"model",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				}

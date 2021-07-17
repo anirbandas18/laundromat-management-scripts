@@ -2,6 +2,7 @@ create user 'lms_type_manager'@'%' identified by '|\/|3t@daTA'; -- Metadata
 create user 'lms_tax_manager'@'%' identified by '\/\/@$#!NG'; -- Wash
 create user 'lms_discount_manager'@'%' identified by 'Cl0t#!|\|g'; -- Clothing
 create user 'lms_clothing_manager'@'%' identified by '!r0Ni|\|G'; -- Ironing
+create user 'lms_access_manager'@'%' identified by '/\Cc3s$'; -- Access
 create user 'lms_user_manager'@'%' identified by 'DrYCL3A|\|'; -- Dry Clean
 create user 'lms_reset_manager'@'%' identified by 'U$3r'; -- User
 create user 'lms_customer_manager'@'%' identified by 'Cu$t0|\/|3r'; -- Customer
@@ -40,6 +41,7 @@ create database lms_type_db;
 create database lms_tax_db;
 create database lms_discount_db;
 create database lms_clothing_db;
+create database lms_access_db;
 create database lms_user_db;
 create database lms_reset_db;
 create database lms_customer_db;
@@ -77,6 +79,7 @@ grant select, insert, update on lms_type_db.* to 'lms_type_manager'@'%';
 grant select, insert, update on lms_tax_db.* to 'lms_tax_manager'@'%';
 grant select, insert, update on lms_discount_db.* to 'lms_discount_manager'@'%';
 grant select, insert, update on lms_clothing_db.* to 'lms_clothing_manager'@'%';
+grant select, insert, update on lms_access_db.* to 'lms_access_manager'@'%';
 grant select, insert, update on lms_user_db.* to 'lms_user_manager'@'%';
 grant select, insert, update on lms_reset_db.* to 'lms_reset_manager'@'%';
 grant select, insert, update on lms_customer_db.* to 'lms_customer_manager'@'%';
@@ -114,6 +117,7 @@ drop database lms_type_db;
 drop database lms_tax_db;
 drop database lms_discount_db;
 drop database lms_clothing_db;
+drop database lms_access_db;
 drop database lms_user_db;
 drop database lms_reset_db;
 drop database lms_customer_db;
@@ -146,6 +150,7 @@ drop database lms_order_db;
 drop database lms_transaction_db;
 
 
+drop user 'lms_access_manager'@'%';
 drop user 'ldm'@'%';
 drop user 'lmm'@'%';
 drop user 'lwm'@'%';

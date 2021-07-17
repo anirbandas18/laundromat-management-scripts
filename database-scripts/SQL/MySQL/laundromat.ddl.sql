@@ -265,44 +265,167 @@ create table if not exists lms_clothing_db.clothing_item (
 );
 
 -----------------------------------------------------------------------------------------------------------------
+------------------------------------------------- ACCESS DB -----------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+
+create table if not exists lms_access_db.resource_model (
+	id int auto_increment,
+	name varchar(20) not null, 
+    description varchar(100),
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_resource_model primary key (id),
+	constraint uq_resource_model_name unique (name),
+    index idx_resource_model_id (id),
+    index idx_resource_model_name (name)
+);
+
+create table if not exists lms_access_db.operation_model (
+	id int auto_increment,
+	name varchar(20) not null, 
+    description varchar(100),
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_operation_model primary key (id),
+	constraint uq_operation_model_name unique (name),
+    index idx_operation_model_id (id),
+    index idx_operation_model_name (name)
+);
+
+create table if not exists lms_access_db.permission_model (
+	id int auto_increment,
+    resource_model_id int not null,
+    operation_model_id int not null,
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_permission_model primary key (id),
+    constraint fk_permission_model_resource_model_id foreign key (resource_model_id) references lms_access_db.resource_model(id),
+    constraint fk_permission_model_operation_model_id foreign key (operation_model_id) references lms_access_db.operation_model(id),
+	constraint uq_permission_model_resource_model_id_operation_model_id unique (resource_model_id, operation_model_id),
+    index idx_permission_model_resource_model_id (resource_model_id),
+    index idx_permission_model_operation_model_id (operation_model_id)
+);
+
+create table if not exists lms_access_db.user_model ( --  internal - employee, external - 3rd party, registered - customer, anonymous - guest
+	id int auto_increment,
+	name varchar(20) not null, 
+    description varchar(100),
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_user_model primary key (id),
+	constraint uq_user_model_name unique (name),
+    index idx_user_model_id (id),
+    index idx_user_model_name (name)
+);
+
+create table if not exists lms_access_db.role_model (
+	id int auto_increment,
+	name varchar(20) not null, 
+    description varchar(100),
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_role_model primary key (id),
+	constraint uq_role_model_name unique (name),
+    index idx_role_model_id (id),
+    index idx_role_model_name (name)
+);
+
+create table if not exists lms_access_db.user_role (
+	id int auto_increment,
+    user_model_id int not null,
+    role_model_id int not null,
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_user_role primary key (id),
+    constraint fk_user_role_user_model_id foreign key (user_model_id) references lms_access_db.user_model(id),
+    constraint fk_user_role_role_model_id foreign key (role_model_id) references lms_access_db.role_model(id),
+	constraint uq_user_role_user_model_id_role_model_id unique (user_model_id, role_model_id),
+    index idx_user_role_user_model_id (user_model_id),
+    index idx_user_role_role_model_id (role_model_id)
+);
+
+create table if not exists lms_access_db.role_permission (
+	id int auto_increment,
+    role_model_id int not null,
+    permission_model_id int not null,
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_role_permission primary key (id),
+    constraint fk_role_permission_role_model_id foreign key (role_model_id) references lms_access_db.role_model(id),
+    constraint fk_role_permission_permission_model_id foreign key (permission_model_id) references lms_access_db.permission_model(id),
+	constraint uq_role_permission_role_model_id_permission_model_id unique (role_model_id, permission_model_id),
+    index idx_role_permission_role_model_id (role_model_id),
+    index idx_role_permission_permission_model_id (permission_model_id)
+);
+
+-----------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- USER DB ------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------
 
-create table if not exists lms_user_db.role_permission_model (
+create table if not exists lms_user_db.user_profile (
 	id int auto_increment,
-    role_type_model_id int not null,
-    permission_type_model_id int not null,
-    created_on timestamp default current_timestamp,
-    created_by int not null,
-    modified_on timestamp default current_timestamp,
-    modified_by int,
-    active_sw bigint default 1,
-    version int default 0,
-    constraint pk_role_permission_model primary key (id),
-	constraint uq_role_permission_model_rt_model_id_pt_model_id unique (role_type_model_id, permission_type_model_id),
-    index idx_role_permission_model_role_type_model_id (role_type_model_id),
-    index idx_role_permission_model_permission_type_model_id (permission_type_model_id)
-);
-
-create table if not exists lms_user_db.user_detail (
-	id int auto_increment,
-    name varchar(50) not null,
+    user_model_id int not null,
+    first_name varchar(50) not null,
+    middle_name varchar(50),
+    last_name varchar(50),
+    user_name varchar(50) not null,
     email_id varchar(100),
     phone_number varchar(15) not null,
-    hashed_token varchar(200) not null,
+    password_hash varchar(200) not null,
     created_on timestamp default current_timestamp,
     created_by int not null,
     modified_on timestamp default current_timestamp,
     modified_by int,
     active_sw bigint default 1,
     version int default 0,
-    constraint pk_user_detail primary key (id),
-    constraint uq_user_detail_name unique (name),
-    constraint uq_user_detail_phone_email unique (phone_number, email_id),
-    index idx_user_detail_name (name),
-    index idx_user_detail_phone_number (phone_number),
-    index idx_user_detail_email_id (email_id)
+    constraint pk_user_profile primary key (id),
+    constraint fk_user_profile_user_model_id foreign key (user_model_id) references lms_user_db.user_model(id),
+    constraint uq_user_profile_user_name unique (user_name),
+    constraint uq_user_profile_phone_email unique (phone_number, email_id),
+    index idx_user_profile_user_name (user_name),
+    index idx_user_profile_user_name_password_hash (user_name, password_hashed),
+    index idx_user_profile_phone_number (phone_number),
+    index idx_user_profile_email_id (email_id)
 );
+
+
+
+
+
+
+
+
+
+
+
 
 create table if not exists lms_user_db.password_history (
 	id int not null auto_increment,

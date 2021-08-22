@@ -53,9 +53,25 @@ create table if not exists lms_type_db.type_model (
 ----------------------------------------------------- TAX DB ----------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------
 
+create table if not exists lms_tax_db.tax_lov ( -- cgst, gst, sales tax, vat, etc.
+	id int auto_increment,
+    name varchar(20) not null, -- discount, cashback
+    description varchar(100),
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_tax_lov primary key (id),
+    constraint uq_tax_lov_name unique (name),
+    index idx_tax_lov_id (id),
+    index idx_tax_lov_name (name)
+);
+
 create table if not exists lms_tax_db.tax_model (
 	id int auto_increment,
-    tax_type_model_id int not null,
+    tax_lov_id int not null,
     currency_type_model_id int not null,
     rate float not null,
     currency_name varchar(10) not null,
@@ -68,8 +84,10 @@ create table if not exists lms_tax_db.tax_model (
     active_sw bigint default 1,
     version int default 0,
     constraint pk_tax_model primary key (id),
+    constraint fk_tax_model_tax_lov_id foreign key (coupon_lov_id) references lms_tax_db.tax_lov(id),
+    constraint uq_tax_model_id_tax_lov_id_currency_type_model_id unique (id, tax_lov_id, currency_type_model_id),
     constraint chk_tax_model_rate check (rate > 0),
-    index idx_tax_model_tax_type_model_id (tax_type_model_id),
+    index idx_tax_model_tax_lov_id (tax_lov_id),
     index idx_tax_model_currency_type_model_id (currency_type_model_id),
     index idx_tax_model_currency_name (currency_name)
 );
@@ -203,12 +221,113 @@ create table if not exists lms_discount_db.discount_amount (
 );*/
 
 -----------------------------------------------------------------------------------------------------------------
+--------------------------------------------------- COUPON DB ---------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+
+create table if not exists lms_coupon_db.coupon_lov ( -- discount, cashback
+	id int auto_increment,
+    name varchar(20) not null, -- discount, cashback
+    description varchar(100),
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_coupon_lov primary key (id),
+    constraint uq_coupon_lov_name unique (name),
+    index idx_coupon_lov_id (id),
+    index idx_coupon_lov_name (name)
+);
+
+create table if not exists lms_coupon_db.coupon_model ( -- true = 5 % upto 50, false = unlimited 2 %, false = 100
+	id int auto_increment,
+    coupon_lov_id int not null,
+    code varchar(100) not null,
+    description varchar(100),
+	rate float not null,
+    threshold float not null,
+    constraints varchar(255),
+    rate_sw bigint default 1,
+	threshold_sw bigint default 1,
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_coupon_model primary key (id),
+    constraint fk_coupon_model_coupon_lov_id foreign key (coupon_lov_id) references lms_coupon_db.coupon_lov(id),
+    constraint uq_coupon_model_id_coupon_lov_id_code unique (id, coupon_lov_id, code),
+    index idx_coupon_model_id (id),
+    index idx_coupon_model_code (code),
+    index idx_coupon_model_coupon_lov_id (coupon_lov_id)
+);
+
+create table if not exists lms_coupon_db.validity_constraints (
+	id int auto_increment,
+    coupon_model_id int not null,
+    valid_from timestamp not null,
+    valid_till_days int not null,
+    maximum_usage_limit int not null,
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_validity_constraints primary key (id),
+    constraint fk_validity_constraints_coupon_model_id foreign key (coupon_model_id) references lms_coupon_db.coupon_model(id),
+    constraint uq_validity_constraints_id_coupon_model_valid_from_till_maximum_usage unique (id, coupon_model_id, valid_from, valid_till_days, maximum_usage_limit),
+    index idx_validity_constraints_id (id),
+    index idx_validity_constraints_coupon_model_id (coupon_model_id)
+);
+
+create table if not exists lms_coupon_db.eligibility_constraints (
+	id int auto_increment,
+    coupon_model_id int not null,
+    service_type_model_id int not null,
+    minimum_value_of_service float not null, -- value of selected service
+    maximum_value_of_service float not null, -- value of selected service
+    minimum_items_in_service int not null, -- items to be serviced
+    maximum_items_in_service int not null, -- items to be serviced
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_eligibility_constraints primary key (id),
+    constraint fk_eligibility_constraints_coupon_model_id foreign key (coupon_model_id) references lms_coupon_db.coupon_model(id),
+    constraint uq_eligibility_constraints_id_coupon_model_id_service_min_max_value_item unique (id, coupon_model_id, service_type_model_id, minimum_value_of_service, maximum_value_of_service, minimum_items_in_service, maximum_items_in_service),
+    index idx_eligibility_constraints_id (id),
+    index idx_eligibility_constraints_coupon_model_id (coupon_model_id),
+    index idx_eligibility_constraints_service_type_model_id (service_type_model_id)
+);
+
+-----------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- CLOTHING DB --------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------
 
+create table if not exists lms_clothing_db.material_type (
+	id int auto_increment auto_increment,
+    name varchar(20) not null, -- cotton, silk, rayon, wool, etc.
+    description varchar(100),
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_material_type primary key (id),
+    constraint uq_material_type_name unique (name),
+    index idx_material_type_id (id),
+    index idx_material_type_name (name)
+);
+
 create table if not exists lms_clothing_db.material_model (
 	id int auto_increment auto_increment,
-    material_type_model_id int not null,
+    material_type_id int not null,
     minimum_temperature float not null,
     maximum_tempertaure float not null,
     temeprature_type_model_id varchar(10) not null,
@@ -223,8 +342,8 @@ create table if not exists lms_clothing_db.material_model (
     active_sw bigint default 1,
     version int default 0,
     constraint pk_material_model primary key (id),
-    constraint uq_material_model_mt_model_id_min_temp_max_temp_tt_model_id unique (material_type_model_id, minimum_temperature, maximum_tempertaure, temeprature_type_model_id),
-    index idx_material_model_material_type_model_id (material_type_model_id),
+    constraint uq_material_model_mt_id_min_temp_max_temp_tt_model_id unique (material_type_id, minimum_temperature, maximum_tempertaure, temeprature_type_model_id),
+    index idx_material_model_material_type_id (material_type_id),
     index idx_material_model_temeprature_type_model_id (temeprature_type_model_id)
 );
 
@@ -268,7 +387,7 @@ create table if not exists lms_clothing_db.clothing_item (
 ------------------------------------------------- ACCESS DB -----------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------
 
-create table if not exists lms_access_db.resource_model (
+create table if not exists lms_access_db.resource_lov ( -- type, tax, access, discount, user, etc.
 	id int auto_increment,
 	name varchar(20) not null, 
     description varchar(100),
@@ -278,13 +397,13 @@ create table if not exists lms_access_db.resource_model (
     modified_by int,
     active_sw bigint default 1,
     version int default 0,
-    constraint pk_resource_model primary key (id),
-	constraint uq_resource_model_name unique (name),
-    index idx_resource_model_id (id),
-    index idx_resource_model_name (name)
+    constraint pk_resource_lov primary key (id),
+	constraint uq_resource_lov_name unique (name),
+    index idx_resource_lov_id (id),
+    index idx_resource_lov_name (name)
 );
 
-create table if not exists lms_access_db.operation_model (
+create table if not exists lms_access_db.operation_lov ( -- create, read, use, edit, all, none
 	id int auto_increment,
 	name varchar(20) not null, 
     description varchar(100),
@@ -294,16 +413,16 @@ create table if not exists lms_access_db.operation_model (
     modified_by int,
     active_sw bigint default 1,
     version int default 0,
-    constraint pk_operation_model primary key (id),
-	constraint uq_operation_model_name unique (name),
-    index idx_operation_model_id (id),
-    index idx_operation_model_name (name)
+    constraint pk_operation_lov primary key (id),
+	constraint uq_operation_lov_name unique (name),
+    index idx_operation_lov_id (id),
+    index idx_operation_lov_name (name)
 );
 
 create table if not exists lms_access_db.permission_model (
 	id int auto_increment,
-    resource_model_id int not null,
-    operation_model_id int not null,
+    resource_lov_id int not null,
+    operation_lov_id int not null,
     created_on timestamp default current_timestamp,
     created_by int not null,
     modified_on timestamp default current_timestamp,
@@ -311,14 +430,14 @@ create table if not exists lms_access_db.permission_model (
     active_sw bigint default 1,
     version int default 0,
     constraint pk_permission_model primary key (id),
-    constraint fk_permission_model_resource_model_id foreign key (resource_model_id) references lms_access_db.resource_model(id),
-    constraint fk_permission_model_operation_model_id foreign key (operation_model_id) references lms_access_db.operation_model(id),
-	constraint uq_permission_model_resource_model_id_operation_model_id unique (resource_model_id, operation_model_id),
-    index idx_permission_model_resource_model_id (resource_model_id),
-    index idx_permission_model_operation_model_id (operation_model_id)
+    constraint fk_permission_model_resource_lov_id foreign key (resource_lov_id) references lms_access_db.resource_lov(id),
+    constraint fk_permission_model_operation_lov_id foreign key (operation_lov_id) references lms_access_db.operation_lov(id),
+	constraint uq_permission_model_resource_lov_id_operation_lov_id unique (resource_lov_id, operation_lov_id),
+    index idx_permission_model_resource_lov_id (resource_lov_id),
+    index idx_permission_model_operation_lov_id (operation_lov_id)
 );
 
-create table if not exists lms_access_db.user_model ( --  internal - employee, external - 3rd party, registered - customer, anonymous - guest
+create table if not exists lms_access_db.user_lov ( --  internal - employee; external - 3rd party; registered - customer, partner; anonymous - guest
 	id int auto_increment,
 	name varchar(20) not null, 
     description varchar(100),
@@ -328,13 +447,13 @@ create table if not exists lms_access_db.user_model ( --  internal - employee, e
     modified_by int,
     active_sw bigint default 1,
     version int default 0,
-    constraint pk_user_model primary key (id),
-	constraint uq_user_model_name unique (name),
-    index idx_user_model_id (id),
-    index idx_user_model_name (name)
+    constraint pk_user_lov primary key (id),
+	constraint uq_user_lov_name unique (name),
+    index idx_user_lov_id (id),
+    index idx_user_lov_name (name)
 );
 
-create table if not exists lms_access_db.role_model (
+create table if not exists lms_access_db.role_lov ( -- employee - admin, manager, operator; external - pickup, delivery; customer - basic, premium; partner - wash, iron, dry-clean; guest - freelook
 	id int auto_increment,
 	name varchar(20) not null, 
     description varchar(100),
@@ -344,33 +463,33 @@ create table if not exists lms_access_db.role_model (
     modified_by int,
     active_sw bigint default 1,
     version int default 0,
-    constraint pk_role_model primary key (id),
-	constraint uq_role_model_name unique (name),
-    index idx_role_model_id (id),
-    index idx_role_model_name (name)
+    constraint pk_role_lov primary key (id),
+	constraint uq_role_lov_name unique (name),
+    index idx_role_lov_id (id),
+    index idx_role_lov_name (name)
 );
 
-create table if not exists lms_access_db.user_role (
+create table if not exists lms_access_db.user_role_model (
 	id int auto_increment,
-    user_model_id int not null,
-    role_model_id int not null,
+    user_lov_id int not null,
+    role_lov_id int not null,
     created_on timestamp default current_timestamp,
     created_by int not null,
     modified_on timestamp default current_timestamp,
     modified_by int,
     active_sw bigint default 1,
     version int default 0,
-    constraint pk_user_role primary key (id),
-    constraint fk_user_role_user_model_id foreign key (user_model_id) references lms_access_db.user_model(id),
-    constraint fk_user_role_role_model_id foreign key (role_model_id) references lms_access_db.role_model(id),
-	constraint uq_user_role_user_model_id_role_model_id unique (user_model_id, role_model_id),
-    index idx_user_role_user_model_id (user_model_id),
-    index idx_user_role_role_model_id (role_model_id)
+    constraint pk_user_role_model primary key (id),
+    constraint fk_user_role_model_user_lov_id foreign key (user_lov_id) references lms_access_db.user_lov(id),
+    constraint fk_user_role_model_role_lov_id foreign key (role_lov_id) references lms_access_db.role_lov(id),
+	constraint uq_user_role_model_user_lov_id_role_lov_id unique (user_lov_id, role_lov_id),
+    index idx_user_role_model_user_lov_id (user_lov_id),
+    index idx_user_role_model_role_lov_id (role_lov_id)
 );
 
-create table if not exists lms_access_db.role_permission (
+create table if not exists lms_access_db.role_permission_model (
 	id int auto_increment,
-    role_model_id int not null,
+    role_lov_id int not null,
     permission_model_id int not null,
     created_on timestamp default current_timestamp,
     created_by int not null,
@@ -378,12 +497,27 @@ create table if not exists lms_access_db.role_permission (
     modified_by int,
     active_sw bigint default 1,
     version int default 0,
-    constraint pk_role_permission primary key (id),
-    constraint fk_role_permission_role_model_id foreign key (role_model_id) references lms_access_db.role_model(id),
-    constraint fk_role_permission_permission_model_id foreign key (permission_model_id) references lms_access_db.permission_model(id),
-	constraint uq_role_permission_role_model_id_permission_model_id unique (role_model_id, permission_model_id),
-    index idx_role_permission_role_model_id (role_model_id),
-    index idx_role_permission_permission_model_id (permission_model_id)
+    constraint pk_role_permission_model primary key (id),
+    constraint fk_role_permission_model_role_lov_id foreign key (role_lov_id) references lms_access_db.role_lov(id),
+    constraint fk_role_permission_model_permission_model_id foreign key (permission_model_id) references lms_access_db.permission_model(id),
+	constraint uq_role_permission_model_role_lov_id_permission_model_id unique (role_lov_id, permission_model_id),
+    index idx_role_permission_model_role_lov_id (role_lov_id),
+    index idx_role_permission_model_permission_model_id (permission_model_id)
+);
+
+create table if not exists lms_access_db.security_question_lov ( -- favourite color, mother's maiden name, etc.
+	id int auto_increment,
+	name varchar(255) not null, 
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_security_question_lov primary key (id),
+	constraint uq_security_question_lov_name unique (name),
+    index idx_security_question_lov_id (id),
+    index idx_security_question_lov_name (name)
 );
 
 -----------------------------------------------------------------------------------------------------------------
@@ -393,13 +527,16 @@ create table if not exists lms_access_db.role_permission (
 create table if not exists lms_user_db.user_profile (
 	id int auto_increment,
     user_model_id int not null,
+    gender_type_model_id int not null,
     first_name varchar(50) not null,
     middle_name varchar(50),
     last_name varchar(50),
-    user_name varchar(50) not null,
+    date_of_birth datetime not null,
     email_id varchar(100),
     phone_number varchar(15) not null,
-    password_hash varchar(200) not null,
+    lock_sw bigint default 1,
+    verified_sw bigint default 0,
+    suspend_sw bigint default 1,
     created_on timestamp default current_timestamp,
     created_by int not null,
     modified_on timestamp default current_timestamp,
@@ -407,29 +544,33 @@ create table if not exists lms_user_db.user_profile (
     active_sw bigint default 1,
     version int default 0,
     constraint pk_user_profile primary key (id),
-    constraint fk_user_profile_user_model_id foreign key (user_model_id) references lms_user_db.user_model(id),
-    constraint uq_user_profile_user_name unique (user_name),
     constraint uq_user_profile_phone_email unique (phone_number, email_id),
-    index idx_user_profile_user_name (user_name),
-    index idx_user_profile_user_name_password_hash (user_name, password_hashed),
+    index idx_user_profile_user_model_id (user_model_id),
     index idx_user_profile_phone_number (phone_number),
     index idx_user_profile_email_id (email_id)
 );
 
+create table if not exists lms_user_db.user_security_question (
+	id int auto_increment,
+    user_profile_id int not null,
+    security_question_model_id int not null,
+    answer varchar(100),
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_user_security_question primary key (id),
+    constraint fk_user_security_question_user_profile_id foreign key (user_profile_id) references lms_user_db.user_profile(id),
+    constraint uq_user_security_question_user_profile_id_security_question_model_id unique (user_profile_id, security_question_model_id),
+    index idx_user_profile_user_profile_id (user_profile_id),
+    index idx_user_profile_user_profile_id_security_question_model_id (user_profile_id, security_question_model_id)
+);
 
-
-
-
-
-
-
-
-
-
-
-create table if not exists lms_user_db.password_history (
+create table if not exists lms_user_db.user_password_history (
 	id int not null auto_increment,
-    user_detail_id int not null,
+    user_profile_id int not null,
     password_hash varchar(255) not null,
     expires_on timestamp not null,
     created_on timestamp default current_timestamp,
@@ -438,28 +579,88 @@ create table if not exists lms_user_db.password_history (
     modified_by int,
     active_sw bigint default 1,
     version int default 0,
-    constraint pk_password_history primary key (id),
-    constraint fk_password_history_user_detail foreign key (user_detail_id) references lms_user_db.user_detail(id),
-    index idx_password_history_user_detail_id (user_detail_id),
-    index idx_password_history_password_hash (password_hash)
+    constraint pk_user_password_history primary key (id),
+    constraint fk_user_password_history_user_profile foreign key (user_profile_id) references lms_user_db.user_profile(id),
+    constraint uq_user_password_history_user_profile_id_password_hash unique (user_profile_id, password_hash),
+    index idx_user_password_history_user_profile_id (user_profile_id),
+    index idx_user_password_history_password_hash (password_hash),
+    index idx_user_password_history_user_profile_id_password_hash (user_profile_id, password_hash)
 );
 
-create table if not exists lms_user_db.user_model (
-	id int auto_increment,
-    user_detail_id int not null,
-    role_permission_model_id int not null,
+create table if not exists lms_user_db.user_preferences(
+	id int not null auto_increment,
+    user_profile_id int not null,
     created_on timestamp default current_timestamp,
     created_by int not null,
     modified_on timestamp default current_timestamp,
     modified_by int,
     active_sw bigint default 1,
     version int default 0,
-    constraint pk_user_model primary key (id),
-	constraint fk_user_model_user_detail foreign key (user_detail_id) references lms_user_db.user_detail(id),
-	constraint fk_user_model_role_permission_model foreign key (role_permission_model_id) references lms_user_db.role_permission_model(id),
-    constraint uq_user_model_role_permission_model_id unique (user_detail_id, role_permission_model_id),
-    index idx_user_model_user_detail_id (user_detail_id),
-    index idx_user_model_role_permission_model_id (role_permission_model_id)
+    constraint pk_user_preferences_history primary key (id),
+    constraint fk_user_preferences_history_user_profile foreign key (user_profile_id) references lms_user_db.user_profile(id),
+    index idx_user_preferences_history_user_profile_id (user_profile_id)
+);
+
+
+-----------------------------------------------------------------------------------------------------------------
+-------------------------------------------------- ADDRESS DB ---------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+
+create table if not exists lms_address_db.address_lov ( -- home, work, facility, other
+	id int auto_increment,
+    name varchar(20) not null, -- discount, cashback
+    description varchar(100),
+    customer_sw bigint default 1,
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_address_lov primary key (id),
+    constraint uq_address_lov_name unique (name),
+    index idx_address_lov_id (id),
+    index idx_address_lov_name (name)
+);
+
+create table if not exists lms_address_db.user_address (
+	id int auto_increment,
+    address_lov_id int not null,
+    user_profile_id int not null,
+    shipping_sw bigint default 0,
+    billing_sw bigint default 0,
+    name varchar(100) not null,
+    house_number varchar(100),
+    floor varchar(100),
+    street_name varchar(100),
+    locality varchar(100) not null,
+    additional_line_1 varchar(255),
+    additional_line_2 varchar(255),
+    city varchar(100) not null,
+    district varchar(100),
+    sub_division varchar(100),
+    pin_code varchar(100) not null,
+    state varchar(100) not null,
+    country varchar(100) not null,
+    latitude double,
+    longitude double,
+    default_sw bigint default 0,
+    created_on timestamp default current_timestamp,
+    created_by int not null,
+    modified_on timestamp default current_timestamp,
+    modified_by int,
+    active_sw bigint default 1,
+    version int default 0,
+    constraint pk_user_address primary key (id),
+    constraint uq_user_address_address_lov_id_user_profile_id_name unique (address_lov_id, user_profile_id, name),
+	index idx_user_address_user_profile (user_profile_id),
+	index idx_user_address_address_lov_id (address_lov_id),
+    index idx_user_address_name (name),
+    index idx_user_address_locality (locality),
+    index idx_user_address_pin_code (pin_code),
+    index idx_user_address_city (city),
+	index idx_user_address_state (state),
+    index idx_user_address_country (country)
 );
 
 -----------------------------------------------------------------------------------------------------------------
@@ -535,7 +736,7 @@ create table if not exists lms_reset_db.password_reset_request_history (
 -------------------------------------------------- CUSTOMER DB --------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------
 
-create table if not exists lms_customer_db.customer_detail (
+/*create table if not exists lms_customer_db.customer_detail (
 	id int auto_increment,
     user_detail_id int not null,
     first_name varchar(50) not null,
@@ -591,7 +792,7 @@ create table if not exists lms_customer_db.customer_address (
 	index idx_customer_address_state (state),
     index idx_customer_address_country (country),
     index idx_customer_address_coordinates (latitude, longitude)
-);
+);*/
 
 -----------------------------------------------------------------------------------------------------------------
 ---------------------------------------------- SUBSCRIPTION DB --------------------------------------------------
